@@ -23,7 +23,7 @@ export const fetchAll: Client[] = () => {
 /**
  * Get a client.
  *
- * @param   {Number|String}  id
+ * @param   {String}  id
  * @returns {Promise}
  */
 export const getClient: Client = (id) => {
@@ -47,10 +47,7 @@ export const findClients: Client[] = (query) => {
     const {field, value} = query;
     return new Promise((resolve, reject) => {
         const clientFound = clients.filter((client: Client) => client[field] === value);
-        if (clientFound.length)
             resolve(clientFound);
-        else
-            reject(new ServiceError({msg: 'client not found', code: 404}));
     });
 
 };

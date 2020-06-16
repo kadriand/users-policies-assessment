@@ -1,7 +1,8 @@
 // @flow
 
 import * as Boom from '@hapi/boom';
-import * as clientsClient from '../clients/clientsClient';
+import * as clientsClient from '../clients/clients';
+import type {Client} from "../models/client";
 
 
 /**
@@ -9,35 +10,32 @@ import * as clientsClient from '../clients/clientsClient';
  *
  * @returns {Promise}
  */
-export const getAllClients = () => {
+export const getAllClients: Client[] = () => {
     return clientsClient.fetchAll();
-}
+};
 
 /**
  * Get a client.
  *
- * @param   {Number|String}  id
+ * @param   {String}  id
  * @returns {Promise}
  */
-export const getClientById = (id) => {
+export const getClientById: Client[] = (id) => {
     return clientsClient.getClient(id)
-        .then(client => client)
+        .then(client => client[0])
         .catch(error => {
             throw Boom.notFound('Client not found');
         });
-}
+};
 
 /**
  * Search the clients by field name and value.
  *
- * @param   {Number|String}  params
+ * @param   {object}  params
  * @returns {Promise}
  */
-export const findClients = (params) => {
+export const findClients: Client[] = (params) => {
     return clientsClient.findClients(params)
-        .then(client => client)
-        .catch(error => {
-            throw Boom.notFound('Client not found');
-        });
+        .then(client => client);
 };
 

@@ -1,6 +1,10 @@
 // @flow
 
 import * as clientsService from '../services/clients';
+import * as policiesService from '../services/policies';
+import type {Client} from "../models/client";
+import type {Policy} from "../models/policy";
+import * as Boom from "@hapi/boom";
 
 /**
  * Get all clients.
@@ -23,10 +27,12 @@ export const fetchAll = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next
  */
-export const fetchById = (req, res, next) => {
+export const getClient = (req, res, next) => {
     const {id} = req.params;
-    clientsService
-        .getClientById(id)
+    policiesService
+        .getPolicyById(id)
+        .then((policy: Policy) => policy.clientId)
+        .then(clientId => clientsService.getClientById(clientId))
         .then(data => res.json({data}))
         .catch(err => next(err));
 };
@@ -38,10 +44,17 @@ export const fetchById = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next
  */
-export const fetchByField = (req, res, next) => {
+export const fetchByClient = (req, res, next) => {
     const {field, value} = req.query;
     clientsService
         .findClients({field, value})
+        .then((clients: Client[]) => {
+                if (clients.length)
+                    return clients[0].id;
+                throw  Boom.notFound('Client not found');
+            }
+        )
+        .then(clientId => policiesService.findPolicies({field: "clientId", value: clientId}))
         .then(data => res.json({data}))
         .catch(err => next(err));
 };
