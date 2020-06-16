@@ -1,4 +1,4 @@
-import HttpStatus from 'http-status-codes';
+import * as HttpStatus from 'http-status-codes';
 
 /**
  * Build error response for validation errors.
@@ -7,35 +7,25 @@ import HttpStatus from 'http-status-codes';
  * @returns {Object}
  */
 function buildError(err) {
-  // Validation errors
-  if (err.isJoi) {
-    return {
-      code: HttpStatus.BAD_REQUEST,
-      message: HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
-      details:
-        err.details &&
-        err.details.map(err => {
-          return {
-            message: err.message,
-            param: err.path.join('.')
-          };
-        })
-    };
-  }
+    // HTTP errors
+    if (err.isBoom) {
+        if (err.output.statusCode === HttpStatus.BAD_REQUEST)
+            return {
+                code: err.output.statusCode,
+                details: err.data
+            };
+        else
+            return {
+                code: err.output.statusCode,
+                message:  err.output.payload.message || err.output.payload.error
+            };
+    }
 
-  // HTTP errors
-  if (err.isBoom) {
+    // Return INTERNAL_SERVER_ERROR for all other cases
     return {
-      code: err.output.statusCode,
-      message: err.output.payload.message || err.output.payload.error
+        code: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
     };
-  }
-
-  // Return INTERNAL_SERVER_ERROR for all other cases
-  return {
-    code: HttpStatus.INTERNAL_SERVER_ERROR,
-    message: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-  };
 }
 
 export default buildError;

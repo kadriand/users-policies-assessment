@@ -8,5 +8,8 @@
         }
       }
     ]
+  ],
+  "plugins": [
+    "transform-flow-strip-types"
   ]
 }

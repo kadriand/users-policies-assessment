@@ -4,10 +4,6 @@
     "node": true,
     "mocha": true
   },
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
   "rules": {
     "camelcase": [
       "error",
@@ -15,5 +11,11 @@
         "properties": "never"
       }
     ]
-  }
+  },
+  "plugins": [
+    "eslint-plugin-flowtype"
+  ],
+  "extends": [
+    "plugin:flowtype/recommended"
+  ]
 }
