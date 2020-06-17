@@ -22,7 +22,7 @@ export const getAllClients: Client[] = () => {
  */
 export const getClientById: Client[] = (id) => {
     return clientsClient.getClient(id)
-        .then(client => client[0])
+        .then(client => client)
         .catch(error => {
             throw Boom.notFound('Client not found');
         });

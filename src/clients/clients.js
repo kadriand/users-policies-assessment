@@ -30,7 +30,7 @@ export const getClient: Client = (id) => {
     return new Promise((resolve, reject) => {
         const clientFound = clients.filter((client: Client) => client.id === id);
         if (clientFound.length)
-            resolve(clientFound);
+            resolve(clientFound[0]);
         else
             reject(new ServiceError({msg: 'client not found', code: 404}));
     });
@@ -47,7 +47,7 @@ export const findClients: Client[] = (query) => {
     const {field, value} = query;
     return new Promise((resolve, reject) => {
         const clientFound = clients.filter((client: Client) => client[field] === value);
-            resolve(clientFound);
+        resolve(clientFound);
     });
 
 };
