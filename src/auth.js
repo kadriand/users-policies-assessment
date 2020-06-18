@@ -4,7 +4,7 @@ import type {Client} from "./models/client";
 import jwt from "jsonwebtoken";
 import jwkToPem from "jwk-to-pem";
 import * as Boom from "@hapi/boom";
-import * as jwk from "../public/jwk.json";
+import * as jwk from "../resources/jwk.json";
 
 const privateKey = jwkToPem(jwk, {private: true});
 const publicKey = jwkToPem(jwk);
@@ -33,14 +33,11 @@ export const authenticate = (client: Client, password: string) => {
  * @param next
  */
 const authorizeRole = (roles, req, res, next) => {
-    console.log(req.headers);
     const authHeader = req.headers['authorization'];
-    console.log(authHeader);
     if (!authHeader)
         throw Boom.unauthorized();
     const jwtToken = authHeader.replace(/^Bearer\s/i, "");
     const claims = jwt.verify(jwtToken, publicKey);
-    console.log(claims);
 
     if (roles.includes(claims.scope))
         next();
