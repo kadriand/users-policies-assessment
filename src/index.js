@@ -1,12 +1,10 @@
 import './env';
 
-import fs from 'fs';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import express from 'express';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import compression from 'compression';
 
 import routes from './routes';
@@ -30,7 +28,6 @@ app.use(helmet());
 app.use(compression());
 app.use(morgan('tiny', { stream: logStream }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(errorHandler.bodyParser);
 app.use(json);
 

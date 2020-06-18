@@ -1,6 +1,5 @@
 
-### AUTHENTICATING AN ADMIN
-# @no-redirect
+### Authenticating a client of role ADMIN
 POST http://localhost:8848/api/login
 Content-Type: application/json
 
@@ -13,8 +12,7 @@ Content-Type: application/json
     client.global.set("auth_token", response.body.token);
 %}
 
-### AUTHENTICATING AN USER
-# @no-redirect
+### Authenticating a client of role USER
 POST http://localhost:8848/api/login
 Content-Type: application/json
 
@@ -27,28 +25,27 @@ Content-Type: application/json
     client.global.set("auth_token", response.body.token);
 %}
 
-### Get request with disabled redirects
+### Getting the client matching a name
 # @no-redirect
 
 GET http://localhost:8848/api/clients/search?field=name&value=Barnett
-Cookie: AuthToken={{auth_token}}
+authorization: Bearer {{auth_token}}
 
-### Get request with disabled redirects
+### Getting a client
 # @no-redirect
 
 GET http://localhost:8848/api/clients/44e44268-dce8-4902-b662-1b34d2c10b8e
-Cookie: AuthToken={{auth_token}}
+authorization: Bearer {{auth_token}}
 
-### Get request with disabled redirects
+### Getting the policy given a client name
 # @no-redirect
 
 GET http://localhost:8848/api/policies/search/client?field=name&value=Britney
-Cookie: AuthToken={{auth_token}}
+authorization: Bearer {{auth_token}}
 
-### Get request with disabled redirects
-# @no-redirect
+### Getting the client of a policy
 
 GET http://localhost:8848/api/policies/7b624ed3-00d5-4c1b-9ab8-c265067ef58b/client
-Cookie: AuthToken={{auth_token}}
+authorization: Bearer {{auth_token}}
 
 ###

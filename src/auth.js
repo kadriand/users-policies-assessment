@@ -1,14 +1,13 @@
 // @flow
 
-import * as clientsService from './services/clients';
 import type {Client} from "./models/client";
-import crypto from "crypto";
+import jwt from "jsonwebtoken";
+import jwkToPem from "jwk-to-pem";
 import * as Boom from "@hapi/boom";
+import * as jwk from "../public/jwk.json";
 
-/**
- *  This will hold the users and authToken related to users
- */
-const authTokens = {};
+const privateKey = jwkToPem(jwk, {private: true});
+const publicKey = jwkToPem(jwk);
 
 /**
  * log in user
@@ -19,9 +18,7 @@ const authTokens = {};
 export const authenticate = (client: Client, password: string) => {
     const hashedPassword = getHashedPassword(password);
     if (client.id === hashedPassword) {
-        const authToken = generateAuthToken();
-        // Store authentication token
-        authTokens[authToken] = client.id;
+        const authToken = generateJwt(client);
         return Promise.resolve(authToken)
     } else {
         throw Boom.unauthorized('Invalid password');
@@ -36,20 +33,19 @@ export const authenticate = (client: Client, password: string) => {
  * @param next
  */
 const authorizeRole = (roles, req, res, next) => {
-    const token = req.cookies['AuthToken'];
-    const user = authTokens[token];
-
-    if (!user)
+    console.log(req.headers);
+    const authHeader = req.headers['authorization'];
+    console.log(authHeader);
+    if (!authHeader)
         throw Boom.unauthorized();
+    const jwtToken = authHeader.replace(/^Bearer\s/i, "");
+    const claims = jwt.verify(jwtToken, publicKey);
+    console.log(claims);
 
-    clientsService
-        .getClientById(user)
-        .then((data: Client) => {
-            if (roles.includes(data.role))
-                next();
-            else
-                throw Boom.forbidden('you cannot access this resource');
-        }).catch(err => next(err));
+    if (roles.includes(claims.scope))
+        next();
+    else
+        throw Boom.forbidden('you cannot access this resource');
 };
 
 export const requireAuthRole = (roles) => {return (req, res, next) => authorizeRole(roles, req, res, next)};
@@ -69,7 +65,7 @@ const getHashedPassword = (password) => {
  *
  * @returns {string}
  */
-const generateAuthToken = () => {
-    return crypto.randomBytes(30).toString('hex');
+const generateJwt = (client: Client) => {
+    return jwt.sign({clientId: client.id, scope: client.role}, privateKey, {algorithm: 'RS256', expiresIn: '10m'});
 };
 

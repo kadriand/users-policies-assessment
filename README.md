@@ -26,6 +26,12 @@ Then, start the application.
 
 Navigate to http://localhost:8848/api/ to check the installation.
 
+To run tests.
+
+    $ yarn test
+    $ yarn test:coverage (with coverage)
+
+
 The file [test/requests/samples.http](https://github.com/kadriand/users-policies-assessment/blob/master/test/requests/samples.http) contains useful requests samples to make with the Jetbrains tool Http Client
 
 ### API call samples
@@ -57,7 +63,7 @@ $ curl -XPOST -H "Content-type: application/json" -d '{"email": "britneyblankens
   "token": "eaebefa9e74be396cc911949d4f8fed786a2b64e76e69697e38d49489b32"
 }
 ```
-This is a token to be used for _Cookie Authentication_ 
+This is a json web token to be used as Bearer token with the header _Authorization_. It expires after ten minutes.
 
 #### Get client by id
 
@@ -66,7 +72,7 @@ This is a token to be used for _Cookie Authentication_
 ###### Response
 For the request:
 ```curl
-$ curl -XGET -H 'Cookie: AuthToken=eaebefa9e74be396cc911949d4f8fed786a2b64e76e69697e38d49489b32' 'http://localhost:8848/api/clients/44e44268-dce8-4902-b662-1b34d2c10b8e'
+$ curl -XGET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsInNjb3BlIjoiYWRtaW4iLCJpYXQiOjE1OTI1MDg2MTksImV4cCI6MTU5MjUwOTIxOX0.Isb2IA8IzB5SJLr6gFOjxxtaf36mZJL-NYJjzT5y4yLKPbdYRLbMzDG5w-ed62lVTmDN0v_sF2dKmqGA3HdviGb-9ju4v1XqXEevCI0z5Szf2-pJP3ybDVNu53H2RffuEfub0IFUo0ysaIEBSbYYXVGaUV0jhgwjopLNYcpplhfucMMFhIolAm-3hEmlnhym6y2J4BMhK-APNbLY5y7s-Yi5eyhAhJnybyqp1sdOWTZ4MIx0cInZe1NGDYTYuR5eaxTjaLNTL0WyV1QwS_8mkyBDUsL39MXRrsfu_tHQdHKltWGDTeoHOVnPsOrDVsO1dSZzTEEHWiGcIrAhhYQCmQ' 'http://localhost:8848/api/clients/44e44268-dce8-4902-b662-1b34d2c10b8e'
 ```
 
 `200 OK` response:
@@ -91,7 +97,7 @@ This endpoint finds the clients whose values for the attribute `<field-name>` ma
 ###### Response
 For the request:
 ```curl
-$ curl -XGET -H 'Cookie: AuthToken=eaebefa9e74be396cc911949d4f8fed786a2b64e76e69697e38d49489b32' 'http://localhost:8848/api/clients/search?field=name&value=Barnett'
+$ curl -XGET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsInNjb3BlIjoiYWRtaW4iLCJpYXQiOjE1OTI1MDg2MTksImV4cCI6MTU5MjUwOTIxOX0.Isb2IA8IzB5SJLr6gFOjxxtaf36mZJL-NYJjzT5y4yLKPbdYRLbMzDG5w-ed62lVTmDN0v_sF2dKmqGA3HdviGb-9ju4v1XqXEevCI0z5Szf2-pJP3ybDVNu53H2RffuEfub0IFUo0ysaIEBSbYYXVGaUV0jhgwjopLNYcpplhfucMMFhIolAm-3hEmlnhym6y2J4BMhK-APNbLY5y7s-Yi5eyhAhJnybyqp1sdOWTZ4MIx0cInZe1NGDYTYuR5eaxTjaLNTL0WyV1QwS_8mkyBDUsL39MXRrsfu_tHQdHKltWGDTeoHOVnPsOrDVsO1dSZzTEEHWiGcIrAhhYQCmQ' 'http://localhost:8848/api/clients/search?field=name&value=Barnett'
 ```
 
 `200 OK` response:
@@ -118,7 +124,7 @@ This endpoint finds the policies of the clients whose value for the attribute `<
 ###### Response
 For the request:
 ```curl
-$ curl -XGET -H 'Cookie: AuthToken=eaebefa9e74be396cc911949d4f8fed786a2b64e76e69697e38d49489b32' 'http://localhost:8848/api/policies/search/client?field=name&value=Britney'
+$ curl -XGET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsInNjb3BlIjoiYWRtaW4iLCJpYXQiOjE1OTI1MDg2MTksImV4cCI6MTU5MjUwOTIxOX0.Isb2IA8IzB5SJLr6gFOjxxtaf36mZJL-NYJjzT5y4yLKPbdYRLbMzDG5w-ed62lVTmDN0v_sF2dKmqGA3HdviGb-9ju4v1XqXEevCI0z5Szf2-pJP3ybDVNu53H2RffuEfub0IFUo0ysaIEBSbYYXVGaUV0jhgwjopLNYcpplhfucMMFhIolAm-3hEmlnhym6y2J4BMhK-APNbLY5y7s-Yi5eyhAhJnybyqp1sdOWTZ4MIx0cInZe1NGDYTYuR5eaxTjaLNTL0WyV1QwS_8mkyBDUsL39MXRrsfu_tHQdHKltWGDTeoHOVnPsOrDVsO1dSZzTEEHWiGcIrAhhYQCmQ' 'http://localhost:8848/api/policies/search/client?field=name&value=Britney'
 ```
 
 `200 OK` response:
@@ -154,7 +160,7 @@ This endpoint returns the client associated with a policy
 ###### Response
 For the request:
 ```curl
-$ curl -XGET -H 'Cookie: AuthToken=eaebefa9e74be396cc911949d4f8fed786a2b64e76e69697e38d49489b32' 'http://localhost:8848/api/policies/7b624ed3-00d5-4c1b-9ab8-c265067ef58b/client'
+$ curl -XGET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsInNjb3BlIjoiYWRtaW4iLCJpYXQiOjE1OTI1MDg2MTksImV4cCI6MTU5MjUwOTIxOX0.Isb2IA8IzB5SJLr6gFOjxxtaf36mZJL-NYJjzT5y4yLKPbdYRLbMzDG5w-ed62lVTmDN0v_sF2dKmqGA3HdviGb-9ju4v1XqXEevCI0z5Szf2-pJP3ybDVNu53H2RffuEfub0IFUo0ysaIEBSbYYXVGaUV0jhgwjopLNYcpplhfucMMFhIolAm-3hEmlnhym6y2J4BMhK-APNbLY5y7s-Yi5eyhAhJnybyqp1sdOWTZ4MIx0cInZe1NGDYTYuR5eaxTjaLNTL0WyV1QwS_8mkyBDUsL39MXRrsfu_tHQdHKltWGDTeoHOVnPsOrDVsO1dSZzTEEHWiGcIrAhhYQCmQ' 'http://localhost:8848/api/policies/7b624ed3-00d5-4c1b-9ab8-c265067ef58b/client'
 ```
 
 `200 OK`
