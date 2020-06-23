@@ -37,12 +37,15 @@ const authorizeRole = (roles, req, res, next) => {
     if (!authHeader)
         throw Boom.unauthorized();
     const jwtToken = authHeader.replace(/^Bearer\s/i, "");
-    const claims = jwt.verify(jwtToken, publicKey);
+    const claims = jwt.verify(jwtToken, publicKey, (error, claims) => {
+        if (error)
+            throw Boom.forbidden(error.message);
+        else if (roles.includes(claims.scope))
+            next();
+        else
+            throw Boom.forbidden('you cannot access this resource');
+    });
 
-    if (roles.includes(claims.scope))
-        next();
-    else
-        throw Boom.forbidden('you cannot access this resource');
 };
 
 export const requireAuthRole = (roles) => {return (req, res, next) => authorizeRole(roles, req, res, next)};

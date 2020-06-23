@@ -1,6 +1,6 @@
 import {Router} from 'express';
 
-import * as authController from '../controllers/auth';
+import * as authController from '../controllers/login';
 import * as validators from "../validators/login";
 import {validateRequest} from "../validators/commons";
 

@@ -13,12 +13,12 @@ const router = Router();
 router.get('/', clientController.fetchAll);
 
 /**
- * GET /api/clients/:id
+ * GET /api/policies/search/client
  */
 router.get('/search/client', validators.findByClient, validateRequest, requireAuthRole(["admin"]), clientController.fetchByClient);
 
 /**
- * GET /api/clients/:id
+ * GET /api/policies/:id/client
  */
 router.get('/:id/client', requireAuthRole(["admin"]), clientController.getClient);
 

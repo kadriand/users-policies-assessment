@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("auth_token", response.body.token);
+    client.global.set("auth_token", response.body.accessToken);
 %}
 
 ### Authenticating a client of role USER
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("auth_token", response.body.token);
+    client.global.set("auth_token", response.body.accessToken);
 %}
 
 ### Getting the client matching a name

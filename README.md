@@ -60,7 +60,7 @@ $ curl -XPOST -H "Content-type: application/json" -d '{"email": "britneyblankens
 
 ```json
 {
-  "token": "eaebefa9e74be396cc911949d4f8fed786a2b64e76e69697e38d49489b32"
+  "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsInNjb3BlIjoiYWRtaW4iLCJpYXQiOjE1OTI1MDg2MTksImV4cCI6MTU5MjUwOTIxOX0.Isb2IA8IzB5SJLr6gFOjxxtaf36mZJL-NYJjzT5y4yLKPbdYRLbMzDG5w-ed62lVTmDN0v_sF2dKmqGA3HdviGb-9ju4v1XqXEevCI0z5Szf2-pJP3ybDVNu53H2RffuEfub0IFUo0ysaIEBSbYYXVGaUV0jhgwjopLNYcpplhfucMMFhIolAm-3hEmlnhym6y2J4BMhK-APNbLY5y7s-Yi5eyhAhJnybyqp1sdOWTZ4MIx0cInZe1NGDYTYuR5eaxTjaLNTL0WyV1QwS_8mkyBDUsL39MXRrsfu_tHQdHKltWGDTeoHOVnPsOrDVsO1dSZzTEEHWiGcIrAhhYQCmQ"
 }
 ```
 This is a json web token to be used as Bearer token with the header _Authorization_. It expires after ten minutes.

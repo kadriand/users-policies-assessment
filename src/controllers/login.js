@@ -23,8 +23,7 @@ export const login = (req, res, next) => {
         )
         .then(client => authenticate(client, password))
         .then(authToken => {
-                res.cookie('AuthToken', authToken);
-                res.json({token: authToken})
+                res.json({accessToken: authToken})
             }
         )
         .catch(err => next(err));

@@ -27,14 +27,15 @@ export const fetchAll = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next
  */
-export const getClient = (req, res, next) => {
-    const {id} = req.params;
-    policiesService
-        .getPolicyById(id)
-        .then((policy: Policy) => policy.clientId)
-        .then(clientId => clientsService.getClientById(clientId))
-        .then(data => res.json({data}))
-        .catch(err => next(err));
+export const getClient = async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const policy: Policy = await policiesService.getPolicyById(id);
+        const client: Client = await clientsService.getClientById(policy.clientId);
+        return res.json({data: client});
+    } catch (error) {
+        next(error)
+    }
 };
 
 /**
@@ -44,17 +45,20 @@ export const getClient = (req, res, next) => {
  * @param {Object} res
  * @param {Function} next
  */
-export const fetchByClient = (req, res, next) => {
-    const {field, value} = req.query;
-    clientsService
-        .findClients({field, value})
-        .then((clients: Client[]) => {
-                if (clients.length)
-                    return clients[0].id;
-                throw  Boom.notFound('Client not found');
-            }
-        )
-        .then(clientId => policiesService.findPolicies({field: "clientId", value: clientId}))
-        .then(data => res.json({data}))
-        .catch(err => next(err));
+export const fetchByClient = async (req, res, next) => {
+    try {
+        const {field, value} = req.query;
+
+        const clients: Client[] = await clientsService.findClients({field, value});
+        if (!clients.length)
+            throw  Boom.notFound('Client not found');
+        const clientId = clients[0].id;
+
+        const policies: Policy[] = await policiesService.findPolicies({field: "clientId", value: clientId});
+        if (!policies.length)
+            throw  Boom.notFound('No policy found');
+        return res.json({data: policies});
+    } catch (error) {
+        next(error)
+    }
 };
